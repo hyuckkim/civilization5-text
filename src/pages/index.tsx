@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Civ5Text } from '@/types';
+import { Civ5TextPanel } from '@/components';
 
-export default function title() {
+export default function Title() {
     const [text, setText] = useState(null as (Civ5Text | null));
     if (text === null) {
-        axios.get('./api/text/Language_ko_KR/random').then(r => {
+        axios.get('http://localhost:3000/api/text/Language_ko_KR/random')
+        .then(r => {
             setText(r.data);
+        })
+        .catch(e => {
+            console.log(e);
         });
     }
     return (
-        <div>
+        <>
             { text !== null 
-                ? <div>
-                    <div>{text.Tag ?? ""}</div>
-                    <textarea>{text.Text ?? ""}</textarea>
-                </div>
+                ? <Civ5TextPanel text={text}/>
                 : <div></div>
             }
             
-        </div>
+        </>
     )
 }
