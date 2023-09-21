@@ -31,3 +31,7 @@ export function getIconFilePath(icon: string): {
     const iconFilePath = dbQuery(`SELECT IconFontTextureFile FROM IConFontTextures WHERE IconFontTexture='${iconFontTexture}'`, 'game')[0].IconFontTextureFile;
     return {file: iconFilePath, offset: iconMapping};
 }
+
+export function getColor(color: string): {Red: number, Green: number, Blue: number, Alpha: number} {
+    return dbQuery(`SELECT Red, Green, Blue, Alpha From Colors WHERE Type='${color}'`, "game")[0] as {Red: number, Green: number, Blue: number, Alpha: number};
+}
