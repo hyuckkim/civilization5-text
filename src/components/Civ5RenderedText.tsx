@@ -1,13 +1,18 @@
-/* eslint-disable @next/next/no-img-element */
 import axios from 'axios';
 import react, { useEffect, useState } from 'react';
+import Civ5renderedTextBlock from './Civ5RenderedTextBlock';
 
-type CivSQLColor = {Red: number, Green: number, Blue: number, Alpha: number};
-type CivColors = { [type: string] : CivSQLColor};
-
+export type CivSQLColor = {Red: number, Green: number, Blue: number, Alpha: number};
+export type CivColors = { [type: string] : CivSQLColor};
 export type Civ5RenderedTextProp = {
     text: string
 }
+export type PrerenderedText = {
+    type: "string" | "icon" | "newline",
+    text: string
+    option: { [data: string]: string }
+}
+
 export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
     const [prerendered, setPrerendered] = useState([] as PrerenderedText[]);
     const [colors, setColors] = useState({} as CivColors);
@@ -34,32 +39,10 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
 
     return (
         <div style={{backgroundColor: 'black'}}>{
-            prerendered.map((e, idx) => {
-                let color = "#ffffff";
-                if (e.option.colorlen) {
-                    const colordat = colors[e.option.colorlen];
-                    if (colordat !== undefined)
-                        color = compileCivSQLColor(colordat);
-                }
-                if (e.option.colorsym) {
-                    color = compileFourColor(e.option.colorsym);
-                }
-                return (e.type === "string") 
-                ? <span style={{color: color, fontSize: 14}} key={idx}>{e.text}</span>
-                : (e.type === "icon")
-                ? <img src={`/api/icon/${e.text}`} alt="" key={idx}/>
-                : (e.type === "newline") 
-                ? <br key={idx} />
-                : <div key={idx} />
-            })
-        }</div>
+            prerendered.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
+        }
+        </div>
     );
-}
-
-type PrerenderedText = {
-    type: "string" | "icon" | "newline",
-    text: string
-    option: { [data: string]: string }
 }
 function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]} {
     let result: PrerenderedText[] = [];
@@ -107,27 +90,3 @@ function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]}
     }
     return {text: result, key: resultkey};
 }
-
-function compileCivSQLColor({Red, Green, Blue, Alpha}: CivSQLColor): string {
-    const red = Math.round(Red * 255).toString(16).padStart(2, '0');
-    const green = Math.round(Green * 255).toString(16).padStart(2, '0');
-    const blue = Math.round(Blue * 255).toString(16).padStart(2, '0');
-    const alpha = Math.round(Alpha * 255).toString(16).padStart(2, '0');
-    return `#${red}${green}${blue}${alpha}`;
-}
-
-function compileFourColor(text: string): string {
-    return text.replace(/COLOR:(\d{1,3}):(\d{1,3}):(\d{1,3}):(\d{1,3})/g, (_match, r, g, b, a) => {
-        const red = parseInt(r).toString(16).padStart(2, "0");
-        const green = parseInt(g).toString(16).padStart(2, "0");
-        const blue = parseInt(b).toString(16).padStart(2, "0");
-        const alpha = parseInt(a).toString(16).padStart(2, "0");
-        return `#${red}${green}${blue}${alpha}`;
-    });
-}
-
-/*
-                axios.get(`http://localhost:3000/api/color/${t}`).then( v => {
-                    newColorKeyCallback(t, v.data);
-                });
-*/
