@@ -12,7 +12,7 @@ export default function Title() {
     useEffect(() => {
         if (router.isReady) {
             const {key} = router.query;
-            axios.get(`http://localhost:3000/api/text/Language_ko_KR/${key}`)
+            axios.get(`${document.location.origin}/api/text/Language_ko_KR/${key}`)
             .then(r => {
                 setText(r.data);
             })

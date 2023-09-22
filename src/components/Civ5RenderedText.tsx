@@ -25,7 +25,7 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
 
         axios.all(
             key.map(
-                k => axios.get(`http://localhost:3000/api/color/${k}`))
+                k => axios.get(`${document.location.origin}/api/color/${k}`))
         ).then(reses => {
             reses.forEach(v => {
                 const urlparts = v.config.url?.split('/') || [];

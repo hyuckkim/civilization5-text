@@ -8,7 +8,7 @@ export default function Title() {
     const [text, setText] = useState(null as (Civ5Text | null));
     
     useEffect(() => {
-        axios.get('http://localhost:3000/api/text/Language_ko_KR/random')
+        axios.get(`${document.location.origin}/api/text/Language_ko_KR/random`)
         .then(r => {
             console.log(r.data);
             setText(r.data);
