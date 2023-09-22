@@ -22,7 +22,7 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
         const {text, key} = prerenderer(sliced);
         const keyValue: CivColors = Object.create({});
         setPrerendered(text);
-
+        
         axios.all(
             key.map(
                 k => axios.get(`${document.location.origin}/api/color/${k}`))
@@ -36,9 +36,9 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
             setColors(keyValue);
         });
     }, [prop.text]);
-
+    
     return (
-        <div style={{backgroundColor: 'black'}}>{
+        <div className='bg-black rounded-md p-4'>{
             prerendered.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
         }
         </div>
