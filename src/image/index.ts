@@ -7,6 +7,11 @@ export async function getIconImageBuffer(imagePath: string, blockNumber: number)
     const image = fs.readFileSync(relativePath);
     return await getImageBlock(image, blockNumber);
 }
+export function getIconImageExist(imagePath: string): boolean {
+  const relativePath = path.join(process.cwd(), 'public/icon/'+ imagePath + '.png');
+  const exist = fs.existsSync(relativePath);
+  return exist;
+}
 
 async function getImageBlock(image: Buffer, blockNumber: number): Promise<Buffer> {
     const fontIconSize = 22;

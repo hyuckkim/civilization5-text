@@ -28,8 +28,13 @@ export function getIconFilePath(icon: string): {
     const iconMapping = iconSelectionQuery.IconMapping;
     const iconFontTexture = iconSelectionQuery.IconFontTexture;
 
-    const iconFilePath = dbQuery(`SELECT IconFontTextureFile FROM IConFontTextures WHERE IconFontTexture='${iconFontTexture}'`, 'game')[0].IconFontTextureFile;
+    const iconFilePath = dbQuery(`SELECT IconFontTextureFile FROM IconFontTextures WHERE IconFontTexture='${iconFontTexture}'`, 'game')[0].IconFontTextureFile;
     return {file: iconFilePath, offset: iconMapping};
+}
+
+export function getIconFiles(): string[] {
+    const data = dbQuery('SELECT IconFontTextureFile FROM IconFontTextures', 'game');
+    return data.map(v => v.IconFontTextureFile);
 }
 
 export function getColor(color: string): {Red: number, Green: number, Blue: number, Alpha: number} {
