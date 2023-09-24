@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
+import path from 'path';
 
-const dbroot = 'src/db/';
-const gamedb = new sqlite(dbroot + 'Civ5DebugDatabase.db');
-const textdb = new sqlite(dbroot + 'Localization-Merged.db');
+const gamedb = new sqlite(path.join(process.cwd(), 'src/db/'+ 'Civ5DebugDatabase.db'));
+const textdb = new sqlite(path.join(process.cwd(), 'src/db/'+ 'Localization-Merged.db'));
 
 function dbQuery(query: string, db: "game" | "text"): any[] {
     return ((db === "game") 
