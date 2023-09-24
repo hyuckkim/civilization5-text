@@ -20,30 +20,21 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
     useEffect(() => {
         const sliced = prop.text.split(/[\[\]]/);
         const {text, key} = prerenderer(sliced);
-        const keyValue: CivColors = Object.create({});
         setPrerendered(text);
-        
-        axios.all(
-            key.map(
-                k => axios.get(`${document.location.origin}/api/color/${k}`))
-        ).then(reses => {
-            reses.forEach(v => {
-                const urlparts = v.config.url?.split('/') || [];
-                const k = urlparts[urlparts.length - 1];
-
-                keyValue[k] = v.data;
-            });
-            setColors(keyValue);
+        patchColorData(key, colors).then(v => {
+            setColors(v);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [prop.text]);
     
     return (
-        <div className='bg-black rounded-md p-4'>{
+        <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
             prerendered.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
         }
         </div>
     );
 }
+
 function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]} {
     let result: PrerenderedText[] = [];
     let resultkey: string[] = [];
@@ -89,4 +80,20 @@ function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]}
         isMarkup = !isMarkup;
     }
     return {text: result, key: resultkey};
+}
+
+async function patchColorData(key: string[], memoized?: CivColors): Promise<CivColors> {
+    const result: CivColors = memoized ? structuredClone(memoized) : {};
+    const data = await axios.all(
+        key.filter(k => memoized ? !(k in memoized) : true)
+            .map(k => axios.get(`${document.location.origin}/api/color/${k}`))
+    );
+    data.forEach(v => {
+        const urlparts = v.config.url?.split('/') || [];
+        const k = urlparts[urlparts.length - 1];
+
+        result[k] = v.data;
+    });
+
+    return result;
 }

@@ -8,8 +8,8 @@ export type Civ5TextPanelProp = {
 export default function Civ5TextPanel(prop: Civ5TextPanelProp) {
     return (
         <div>
-            <div>{prop.text.Tag ?? ""}</div>
-            <textarea defaultValue={prop.text.Text ?? ""} style={{resize: 'both'}}/>
+            <h3>{prop.text.Tag ?? ""}</h3>
+            <textarea defaultValue={prop.text.Text ?? ""} className='resize w-96 h-48 border-gray-200 border-2'/>
             <Civ5RenderedText text={prop.text.Text}/>
         </div>
     )
