@@ -7,6 +7,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (<>
     <header></header>
     <Component {...pageProps} />
-    <footer className='mt-20 border-t-2 border-gray-500'>Civilization 5 - Vox populi v3.9.4</footer>
+    <footer className='mt-20 border-t-2 border-gray-500'>Civilization 5 - Vox populi v3.10.12</footer>
   </>);
 }
