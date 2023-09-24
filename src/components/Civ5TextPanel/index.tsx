@@ -1,7 +1,6 @@
 import { Civ5Text } from '@/types';
-import react, { useRef } from 'react';
+import react from 'react';
 import Civ5RenderedText from './Civ5RenderedText';
-import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 
 export type Civ5TextPanelProp = {
     text: Civ5Text
