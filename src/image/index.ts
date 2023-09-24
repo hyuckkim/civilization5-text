@@ -2,10 +2,20 @@ import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
 
+const imageCache = new Map<string, Buffer>();
 export async function getIconImageBuffer(imagePath: string, blockNumber: number): Promise<Buffer> {
+  const cacheid = `${imagePath}_${blockNumber}`;
+  if (imageCache.has(cacheid)) {
+    return imageCache.get(cacheid) as Buffer;
+  }
+  else {
     const relativePath = path.join(process.cwd(), 'public/icon/'+ imagePath + '.png');
     const image = fs.readFileSync(relativePath);
-    return await getImageBlock(image, blockNumber);
+    const result = await getImageBlock(image, blockNumber);
+    
+    imageCache.set(cacheid, result);
+    return result;
+  }
 }
 export function getIconImageExist(imagePath: string): boolean {
   const relativePath = path.join(process.cwd(), 'public/icon/'+ imagePath + '.png');
@@ -45,4 +55,4 @@ async function getImageBlock(image: Buffer, blockNumber: number): Promise<Buffer
       .png().toBuffer();
   
     return result;
-  }
+}
