@@ -41,9 +41,9 @@ export function Civ5renderedTextBlockToText(prop: Civ5renderedTextBlockProp): st
     }
     switch (prop.text.type) {
         case "string":
-            return `<span style={{color: color, font-size: 14}}>${prop.text.text}</span>`;
+            return `<span style="color: ${color}; background-color: black; font-size: 14; ">${prop.text.text}</span>`;
         case "icon":
-            return `<img src=${document.location.origin}/api/icon/${prop.text.text} alt="" />`;
+            return `<img src=${document.location.origin}/api/icon/${prop.text.text} alt="" style="vertical-align: middle; background-color: black;" />`;
         case "newline":
             return `<br />`;
         default:
