@@ -29,6 +29,28 @@ export default function Civ5renderedTextBlock(prop: Civ5renderedTextBlockProp) {
     }
 }
 
+export function Civ5renderedTextBlockToText(prop: Civ5renderedTextBlockProp): string {
+    let color = "#ffffff";
+    if (prop.text.option.colorlen) {
+        const colordat = prop.colors[prop.text.option.colorlen];
+        if (colordat !== undefined)
+            color = compileCivSQLColor(colordat);
+    }
+    if (prop.text.option.colorsym) {
+        color = compileFourColor(prop.text.option.colorsym);
+    }
+    switch (prop.text.type) {
+        case "string":
+            return `<span style={{color: color, font-size: 14}}>${prop.text.text}</span>`;
+        case "icon":
+            return `<img src=${document.location.origin}/api/icon/${prop.text.text} alt="" />`;
+        case "newline":
+            return `<br />`;
+        default:
+            return ``;
+    }
+}
+
 function compileCivSQLColor({Red, Green, Blue, Alpha}: CivSQLColor): string {
     const red = Math.round(Red * 255).toString(16).padStart(2, '0');
     const green = Math.round(Green * 255).toString(16).padStart(2, '0');

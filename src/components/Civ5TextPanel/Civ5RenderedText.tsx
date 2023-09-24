@@ -1,11 +1,12 @@
 import axios from 'axios';
 import react, { useEffect, useState } from 'react';
-import Civ5renderedTextBlock from './Civ5RenderedTextBlock';
+import Civ5renderedTextBlock, { Civ5renderedTextBlockToText } from './Civ5RenderedTextBlock';
 
 export type CivSQLColor = {Red: number, Green: number, Blue: number, Alpha: number};
 export type CivColors = { [type: string] : CivSQLColor};
 export type Civ5RenderedTextProp = {
-    text: string
+    text: string,
+    onTextRendered?: (t: string) => void,
 }
 export type PrerenderedText = {
     type: "string" | "icon" | "newline",
@@ -23,6 +24,12 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
         setPrerendered(text);
         patchColorData(key, colors).then(v => {
             setColors(v);
+
+            if (prop.onTextRendered) {
+                let resultText = "";
+                prerendered.map((e, idx) => { resultText += Civ5renderedTextBlockToText({text: e, colors}) });
+                prop.onTextRendered(resultText);
+            }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [prop.text]);
