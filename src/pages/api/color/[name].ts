@@ -11,6 +11,10 @@ export default function handler(
 ) {
     const { name } = req.query;
     if (typeof(name) === 'string') {
+      if (name.match(/[^A-Z_]/g)) {
+        res.status(400).end();
+        return;
+      }
         const data = getColor(name);
         res.status(200).json(data as any as ResponseData);
     }

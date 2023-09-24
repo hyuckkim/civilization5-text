@@ -6,7 +6,12 @@ export default async function handler(
   req: NextApiRequest, 
   res: NextApiResponse) {
     const { name } = req.query;
+    
     if (typeof(name) === 'string') {
+      if (name.match(/[^A-Z_]/g)) {
+        res.status(400).end();
+        return;
+      }
       const { file, offset } = getIconFilePath(name);
       
       const result = await getIconImageBuffer(file, offset);

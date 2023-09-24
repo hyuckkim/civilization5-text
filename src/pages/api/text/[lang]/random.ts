@@ -11,7 +11,11 @@ export default function handler(
 ) {
     const { lang } = req.query;
     if (typeof(lang) === 'string') {
-        const data = getRandomText(lang)[0];
+      if (lang.match(/[^A-Za-z_]/g)) {
+        res.status(400).end();
+        return;
+      }
+        const data = getRandomText(lang);
         res.status(200).json(data as any as ResponseData);
     }
     else {
