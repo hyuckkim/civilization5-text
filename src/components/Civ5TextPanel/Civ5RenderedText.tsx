@@ -27,9 +27,7 @@ export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
 
             if (prop.onTextRendered) {
                 let resultText = "";
-                resultText += `<div style="background-color: black;>`;
                 text.map((e, idx) => { resultText += Civ5renderedTextBlockToText({text: e, colors}) });
-                resultText += `</div>`;
                 prop.onTextRendered(resultText);
             }
         });
