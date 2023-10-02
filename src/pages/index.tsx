@@ -18,12 +18,12 @@ export default function Title() {
         });
     }, []);
     return (
-        <>
+        <div className='m-28'>
             { text !== null 
                 ? <Civ5TextPanel text={text}/>
                 : <div></div>
             }
             
-        </>
+        </div>
     )
 }

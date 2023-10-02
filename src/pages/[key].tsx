@@ -22,11 +22,11 @@ export default function Title() {
         }
     }, [router.isReady, router.query])
     return (
-        <>
+        <div className='m-28'>
             { text !== null 
                 ? <Civ5TextPanel text={text}/>
                 : <div></div>
             }
-        </>
+        </div>
     )
 }
