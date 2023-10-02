@@ -11,11 +11,11 @@ export default function handler(
 ) {
     const { lang, tag } = req.query;
     if (typeof(tag) === 'string' && typeof(lang) === 'string') {
-      if (tag.match(/[^A-Z_]/g)) {
+      if (tag.match(/[^A-Z_0-9]/g)) {
         res.status(400).end();
         return;
       }
-      if (lang.match(/[^A-Za-z_]/g)) {
+      if (lang.match(/[^A-Za-z_0-9]/g)) {
         res.status(400).end();
         return;
       }

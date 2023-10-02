@@ -8,7 +8,7 @@ export default async function handler(
     const { name } = req.query;
     
     if (typeof(name) === 'string') {
-      if (name.match(/[^A-Z_]/g)) {
+      if (name.match(/[^A-Z_0-9]/g)) {
         res.status(400).end();
         return;
       }

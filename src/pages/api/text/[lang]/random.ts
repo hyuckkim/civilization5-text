@@ -11,7 +11,7 @@ export default function handler(
 ) {
     const { lang } = req.query;
     if (typeof(lang) === 'string') {
-      if (lang.match(/[^A-Za-z_]/g)) {
+      if (lang.match(/[^A-Za-z_0-9]/g)) {
         res.status(400).end();
         return;
       }
