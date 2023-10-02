@@ -1,11 +1,25 @@
 import { getIconFiles } from "./db";
 import { getIconImageExist } from "./image";
 
-export function check_icons() {
+export type imageFileExistedInfo = {
+    success: number,
+    fail: number,
+    log: string[]
+}
+export function check_icons(): imageFileExistedInfo {
+    const info: imageFileExistedInfo = {success: 0, fail: 0, log: []};
+
     const iconFilePaths = getIconFiles();
     iconFilePaths.map(p => {
         if (!getIconImageExist(p)) {
-            console.log("-", "\x1b[31merror\x1b[0m", `icon ${p} is not exist`);
+            ++info.fail;
+            info.log.push(`icon ${p} is not exist`);
+        }
+        else {
+            ++info.success;
+            info.log.push(`icon ${p} is exist`);
         }
     });
+    
+    return info;
 }
