@@ -1,4 +1,4 @@
-import { getColor, getIconFilePath } from "@/db";
+import { getIconFilePath } from "@/db";
 import { getIconImageBuffer } from "@/image";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,5 +10,5 @@ export async function GET(request: NextRequest, { params }: { params: { name: st
   const { file, offset } = getIconFilePath(params.name);
   const result: Uint8Array = await getIconImageBuffer(file, offset);
   
-  return new Response(result)
+  return new NextResponse(result)
 }
