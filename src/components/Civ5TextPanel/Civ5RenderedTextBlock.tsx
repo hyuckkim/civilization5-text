@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { CivColors, CivSQLColor, PrerenderedText } from "./Civ5RenderedText"
 
@@ -27,28 +26,6 @@ export default function Civ5renderedTextBlock(prop: Civ5renderedTextBlockProp) {
             return <br />
         default:
             return <></>
-    }
-}
-
-export function Civ5renderedTextBlockToText(prop: Civ5renderedTextBlockProp): string {
-    let color = "#ffffff";
-    if (prop.text.option.colorlen) {
-        const colordat = prop.colors[prop.text.option.colorlen];
-        if (colordat !== undefined)
-            color = compileCivSQLColor(colordat);
-    }
-    if (prop.text.option.colorsym) {
-        color = compileFourColor(prop.text.option.colorsym);
-    }
-    switch (prop.text.type) {
-        case "string":
-            return `<span style="color: ${color}; background-color: black; font-size: 14; ">${prop.text.text}</span>`;
-        case "icon":
-            return `<img src=${document.location.origin}/api/icon/${prop.text.text} alt="" style="vertical-align: middle; background-color: black;" />`;
-        case "newline":
-            return `<br />`;
-        default:
-            return ``;
     }
 }
 

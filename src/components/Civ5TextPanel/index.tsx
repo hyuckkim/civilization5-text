@@ -11,7 +11,7 @@ export default function Civ5TextPanel(prop: Civ5TextPanelProp) {
         <div>
             <h3>{prop.text.Tag ?? ""}</h3>
             <textarea defaultValue={prop.text.Text ?? ""} className='resize w-full h-48 border-gray-200 border-2'/>
-            <Civ5RenderedText text={prop.text.Text} onTextRendered={(t) => { console.log(t)}}/>
+            <Civ5RenderedText text={prop.text.Text} />
         </div>
     )
 }
