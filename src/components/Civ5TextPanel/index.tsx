@@ -1,3 +1,4 @@
+'use client'
 import { Civ5Text } from '@/types';
 import react from 'react';
 import Civ5RenderedText from './Civ5RenderedText';

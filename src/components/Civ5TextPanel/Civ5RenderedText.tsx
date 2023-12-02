@@ -1,3 +1,4 @@
+'use client'
 import axios from 'axios';
 import react, { useEffect, useState } from 'react';
 import Civ5renderedTextBlock, { Civ5renderedTextBlockToText } from './Civ5RenderedTextBlock';
