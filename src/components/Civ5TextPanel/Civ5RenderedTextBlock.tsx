@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { CivColors, CivSQLColor, PrerenderedText } from "./Civ5RenderedText"
 
 type Civ5renderedTextBlockProp = {
@@ -21,7 +22,7 @@ export default function Civ5renderedTextBlock(prop: Civ5renderedTextBlockProp) {
         case "string":
             return <span style={{color: color, fontSize: 14}}>{prop.text.text}</span>;
         case "icon":
-            return <img src={`/api/icon/${prop.text.text}`} alt="" />
+            return <Image src={`/api/icon/${prop.text.text}`} alt="" width={22} height={22} />
         case "newline":
             return <br />
         default:
