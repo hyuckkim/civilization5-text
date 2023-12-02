@@ -1,7 +1,6 @@
-'use client'
-import axios from 'axios';
-import react, { useEffect, useState } from 'react';
+import react from 'react';
 import Civ5renderedTextBlock from './Civ5RenderedTextBlock';
+import { getColor } from '@/db';
 
 export type CivSQLColor = {Red: number, Green: number, Blue: number, Alpha: number};
 export type CivColors = { [type: string] : CivSQLColor};
@@ -14,23 +13,14 @@ export type PrerenderedText = {
     option: { [data: string]: string }
 }
 
-export default function Civ5RenderedText(prop: Civ5RenderedTextProp) {
-    const [prerendered, setPrerendered] = useState([] as PrerenderedText[]);
-    const [colors, setColors] = useState({} as CivColors);
-
-    useEffect(() => {
-        const sliced = prop.text.split(/[\[\]]/);
-        const {text, key} = prerenderer(sliced);
-        setPrerendered(text);
-        patchColorData(key, colors).then(v => {
-            setColors(v);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [prop.text]);
+export default async function Civ5RenderedText(prop: Civ5RenderedTextProp) {
+    const sliced = prop.text.split(/[\[\]]/);
+    const {text, key} = prerenderer(sliced);
+    const colors = patchColorData(key);
     
     return (
         <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
-            prerendered.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
+            text.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
         }
         </div>
     );
@@ -83,18 +73,10 @@ function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]}
     return {text: result, key: resultkey};
 }
 
-async function patchColorData(key: string[], memoized?: CivColors): Promise<CivColors> {
-    const result: CivColors = memoized ? structuredClone(memoized) : {};
-    const data = await axios.all(
-        key.filter(k => memoized ? !(k in memoized) : true)
-            .map(k => axios.get(`${document.location.origin}/api/color/${k}`))
-    );
-    data.forEach(v => {
-        const urlparts = v.config.url?.split('/') || [];
-        const k = urlparts[urlparts.length - 1];
-
-        result[k] = v.data;
-    });
+function patchColorData(key: string[]): CivColors {
+    const result: CivColors = key.reduce((prev: CivColors, curr: string) => {
+        return {...prev, [curr]: getColor(curr)}
+    }, {});
 
     return result;
 }
