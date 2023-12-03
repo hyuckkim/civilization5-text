@@ -56,7 +56,7 @@ function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]}
         const t = sliced[s];
         if (!isMarkup) {
             current.text = t;
-            result.push(structuredClone(current));
+            if (!!t) result.push(structuredClone(current));
         }
         else {
             if (t === "NEWLINE") {

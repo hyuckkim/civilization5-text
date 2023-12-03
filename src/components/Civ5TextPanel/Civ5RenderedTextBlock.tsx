@@ -6,22 +6,22 @@ type Civ5renderedTextBlockProp = {
     colors: CivColors,
 }
 
-export default function Civ5renderedTextBlock(prop: Civ5renderedTextBlockProp) {
+export default function Civ5renderedTextBlock({ text, colors }: Civ5renderedTextBlockProp) {
     let color = "#ffffff";
-    if (prop.text.option.colorlen) {
-        const colordat = prop.colors[prop.text.option.colorlen];
+    if (!!text.option.colorlen) {
+        const colordat = colors[text.option.colorlen];
         if (colordat !== undefined)
             color = compileCivSQLColor(colordat);
     }
-    if (prop.text.option.colorsym) {
-        color = compileFourColor(prop.text.option.colorsym);
+    if (!!text.option.colorsym) {
+        color = compileFourColor(text.option.colorsym);
     }
 
-    switch (prop.text.type) {
+    switch (text.type) {
         case "string":
-            return <span style={{color: color, fontSize: 14}}>{prop.text.text}</span>;
+            return <span style={ color !== "#ffffff" ? {color: color} : {}} className="text-sm text-white">{text.text}</span>;
         case "icon":
-            return <Image src={`/api/icon/${prop.text.text}`} alt="" width={22} height={22} />
+            return <Image src={`/api/icon/${text.text}`} alt="" width={22} height={22} />
         case "newline":
             return <br />
         default:
