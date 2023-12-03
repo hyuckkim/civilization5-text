@@ -1,11 +1,12 @@
-import react from 'react';
+'use client'
+
+import react, { useEffect, useMemo, useState } from 'react';
 import Civ5renderedTextBlock from './Civ5RenderedTextBlock';
-import { getColor } from '@/db';
 
 export type CivSQLColor = {Red: number, Green: number, Blue: number, Alpha: number};
 export type CivColors = { [type: string] : CivSQLColor};
 export type Civ5RenderedTextProp = {
-    text: string,
+    str: string,
 }
 export type PrerenderedText = {
     type: "string" | "icon" | "newline",
@@ -13,14 +14,28 @@ export type PrerenderedText = {
     option: { [data: string]: string }
 }
 
-export default async function Civ5RenderedText(prop: Civ5RenderedTextProp) {
-    const sliced = prop.text.split(/[\[\]]/);
-    const {text, key} = prerenderer(sliced);
-    const colors = patchColorData(key);
+export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
+    const [renderingText, setRenderingText] = useState<PrerenderedText[]>([]);
+    const [textKey, setTextKey] = useState<string[]>([]);
+    const [colors, setColors] = useState<CivColors>({});
+    
+    useEffect(() => {
+        const sliced = str.split(/[\[\]]/);
+        const {text, key} = prerenderer(sliced);
+
+        setRenderingText(text);
+        setTextKey(key);
+    }, [str]);
+
+    useEffect(() => {
+        patchColorData(textKey).then(v => {
+            setColors(v);
+        })
+    }, [textKey]);
     
     return (
         <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
-            text.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
+            renderingText.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
         }
         </div>
     );
@@ -73,10 +88,14 @@ function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]}
     return {text: result, key: resultkey};
 }
 
-function patchColorData(key: string[]): CivColors {
-    const result: CivColors = key.reduce((prev: CivColors, curr: string) => {
-        return {...prev, [curr]: getColor(curr)}
-    }, {});
+async function patchColorData(key: string[]): Promise<CivColors> {
+    const dat = await Promise.all(key.map(d => getColorData(d)));
 
-    return result;
+    return dat.reduce((prev: CivColors, curr: CivSQLColor, idx) => {
+        return {...prev, [key[idx]]: curr};
+    }, {});
+}
+async function getColorData(color: string): Promise<CivSQLColor> {
+    const work = await fetch(new URL(`/api/color/${color}`, document.location.origin));
+    return await work.json()
 }
