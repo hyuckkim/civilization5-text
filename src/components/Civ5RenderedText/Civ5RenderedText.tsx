@@ -1,7 +1,7 @@
 'use client'
 
 import react, { useEffect, useState } from 'react';
-import Civ5renderedTextBlock from './Civ5RenderedTextBlock';
+import { Civ5RenderedTextBlock } from '../Civ5RenderedTextBlock';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor, PrerenderedText } from '@/types';
 import { prerenderer } from '@/utils';
 
@@ -26,18 +26,23 @@ export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     
     return (
         <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
-            renderingText.map((e, idx) => <Civ5renderedTextBlock text={e} colors={colors} key={idx} />)
+            renderingText.map((e, idx) => <Civ5RenderedTextBlock text={e} colors={colors} key={idx} />)
         }
         </div>
     );
 }
 
 async function patchColorData(key: string[]): Promise<CivColors> {
-    const dat = await Promise.all(key.map(d => getColorData(d)));
-
-    return dat.reduce((prev: CivColors, curr: CivSQLColor, idx) => {
-        return {...prev, [key[idx]]: curr};
-    }, {});
+    try {
+        const dat = await Promise.all(key.map(d => getColorData(d)));
+    
+        return dat.reduce((prev: CivColors, curr: CivSQLColor, idx) => {
+            return {...prev, [key[idx]]: curr};
+        }, {});
+    }
+    catch {
+        throw new Error('유효하지 않은 색이 있습니다.');
+    }
 }
 async function getColorData(color: string): Promise<CivSQLColor> {
     const work = await fetch(new URL(`/api/color/${color}`, document.location.origin));

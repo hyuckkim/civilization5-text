@@ -1,0 +1,1 @@
+export { default as Civ5RenderedText_Server } from './Civ5RenderedText_Server';
