@@ -1,4 +1,5 @@
 import { CivSQLColor, PrerenderedText } from "@/types";
+import * as regexp_misc from 'regexp-misc';
 
 export function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]} {
   let result: PrerenderedText[] = [];
@@ -18,29 +19,31 @@ export function prerenderer(sliced: string[]): {text: PrerenderedText[], key: st
       if (!!t) result.push(structuredClone(current));
     }
     else {
-      if (t === "NEWLINE") {
-        result.push({ type: "newline", text: "", option: {} });
-      }
-      else if (t === "SPACE") {
-        result.push({ type: "string", text: " ", option: {} });
-      }
-      else if (t === "TAB") {
-        result.push({ type: "string", text: "\t", option: {} });
-      }
-      else if (t.startsWith("ICON")) {
-        result.push({ type: "icon", text: t, option: {} });
-      }
-      else if (t.startsWith("COLOR:")) {
-        current.option.colorsym = t;
-      }
-      else if (t.startsWith("COLOR_")) {
-        if (!resultkey.includes(t)) resultkey.push(t);
-        current.option.colorlen = t;
-      }
-      else if (t === "ENDCOLOR") {
-        delete current.option.colorlen;
-        delete current.option.colorsym;
-      }
+      regexp_misc.match(t, [
+        [/^NEWLINE$/, () => {
+          result.push({ type: "newline", text: "", option: {} });
+        }],
+        [/^SPACE$/, () => {
+          result.push({ type: "string", text: " ", option: {} });
+        }],
+        [/^TAB$/, () => {
+          result.push({ type: "string", text: "\t", option: {} });
+        }],
+        [/^ICON/, () => {
+          result.push({ type: "icon", text: t, option: {} });
+        }],
+        [/^COLOR:/, () => {
+          current.option.colorsym = t;
+        }],
+        [/^COLOR_/, () => {
+          if (!resultkey.includes(t)) resultkey.push(t);
+          current.option.colorlen = t;
+        }],
+        [/^ENDCOLOR$/, () => {
+          delete current.option.colorlen;
+          delete current.option.colorsym;
+        }],
+      ]);
     }
     isMarkup = !isMarkup;
   }
