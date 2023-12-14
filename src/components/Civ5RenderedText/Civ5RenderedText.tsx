@@ -4,6 +4,7 @@ import react, { useEffect, useState } from 'react';
 import { Civ5RenderedTextBlock } from '../Civ5RenderedTextBlock';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor, PrerenderedText } from '@/types';
 import { prerenderer } from '@/utils';
+import * as regexp_misc from 'regexp-misc';
 
 export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     const [renderingText, setRenderingText] = useState<PrerenderedText[]>([]);
@@ -11,7 +12,7 @@ export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     const [colors, setColors] = useState<CivColors>({});
     
     useEffect(() => {
-        const sliced = str.split(/[\[\]]/);
+        const sliced = regexp_misc.separate(str, /\[(.+?)\]/g);
         const {text, key} = prerenderer(sliced);
 
         setRenderingText(text);

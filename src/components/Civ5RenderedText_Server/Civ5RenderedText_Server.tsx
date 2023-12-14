@@ -3,10 +3,11 @@ import {Civ5RenderedTextBlock} from '../Civ5RenderedTextBlock';
 import { getColor } from '@/db';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor } from '@/types';
 import { prerenderer } from '@/utils';
+import * as regexp_misc from 'regexp-misc';
 
 export default async function Civ5RenderedText_Server({ str }: Civ5RenderedTextProp) {
   
-  const sliced = str.split(/[\[\]]/);
+  const sliced = regexp_misc.separate(str, /\[(.+?)\]/g);
   const {text, key} = prerenderer(sliced);
   const colors = patchColorData(key)
     

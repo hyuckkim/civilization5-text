@@ -1,7 +1,7 @@
 import { CivSQLColor, PrerenderedText } from "@/types";
 import * as regexp_misc from 'regexp-misc';
 
-export function prerenderer(sliced: string[]): {text: PrerenderedText[], key: string[]} {
+export function prerenderer(sliced: (string | RegExpExecArray)[]): {text: PrerenderedText[], key: string[]} {
   let result: PrerenderedText[] = [];
   let resultkey: string[] = [];
   
@@ -10,15 +10,13 @@ export function prerenderer(sliced: string[]): {text: PrerenderedText[], key: st
     text: "",
     option: {}
   }
-  
-  let isMarkup = false;
-  for (let s in sliced) {
-    const t = sliced[s];
-    if (!isMarkup) {
-      current.text = t;
-      if (!!t) result.push(structuredClone(current));
+  sliced.forEach( d => {
+    if (typeof d === "string") {
+      current.text = d;
+      if (!!d) result.push(structuredClone(current));
     }
     else {
+      const t = d[1];
       regexp_misc.match(t, [
         [/^NEWLINE$/, () => {
           result.push({ type: "newline", text: "", option: {} });
@@ -45,8 +43,7 @@ export function prerenderer(sliced: string[]): {text: PrerenderedText[], key: st
         }],
       ]);
     }
-    isMarkup = !isMarkup;
-  }
+  });
   return {text: result, key: resultkey};
 }
 
