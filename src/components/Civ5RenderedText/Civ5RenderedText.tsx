@@ -27,7 +27,9 @@ export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     
     return (
         <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
-            renderingText.map((e, idx) => <Civ5RenderedTextBlock text={e} colors={colors} key={idx} />)
+            isTextCorrect(str) 
+            ? renderingText.map((e, idx) => <Civ5RenderedTextBlock text={e} colors={colors} key={idx} />)
+            : <span className='text-sm text-white'>텍스트에 오류가 있습니다 (괄호가 닫히지 않았음)</span>
         }
         </div>
     );
@@ -48,4 +50,10 @@ async function patchColorData(key: string[]): Promise<CivColors> {
 async function getColorData(color: string): Promise<CivSQLColor> {
     const work = await fetch(new URL(`/api/color/${color}`, document.location.origin));
     return await work.json()
+}
+
+function isTextCorrect(text: string): boolean {
+    const left = text.split('[').length - 1;
+    const right = text.split(']').length - 1;
+    return left === right;
 }
