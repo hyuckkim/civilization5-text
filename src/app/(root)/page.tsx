@@ -1,6 +1,6 @@
 import React from 'react';
 import { getRandomText } from '@/db';
-import { ChangableRenderedText } from '@/components';
+import ChangableRenderedText from '@/components/ChangableRenderedText';
 import Link from 'next/link';
 
 export default async function Title() {

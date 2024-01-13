@@ -1,1 +1,0 @@
-export { default as Civ5RenderedTextBlock } from './Civ5RenderedTextBlock';

@@ -1,1 +1,0 @@
-export { default as Civ5RenderedText } from './Civ5RenderedText';

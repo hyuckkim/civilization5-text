@@ -1,7 +1,7 @@
 'use client'
 
 import react, { useEffect, useState } from 'react';
-import { Civ5RenderedTextBlock } from '../Civ5RenderedTextBlock';
+import Civ5RenderedTextBlock from './Civ5RenderedTextBlock';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor, PrerenderedText } from '@/types';
 import { prerenderer } from '@/utils';
 import * as regexp_misc from 'regexp-misc';

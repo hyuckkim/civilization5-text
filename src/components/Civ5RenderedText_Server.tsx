@@ -1,5 +1,5 @@
 import react from 'react';
-import {Civ5RenderedTextBlock} from '../Civ5RenderedTextBlock';
+import Civ5RenderedTextBlock from './Civ5RenderedTextBlock';
 import { getColor } from '@/db';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor } from '@/types';
 import { prerenderer } from '@/utils';

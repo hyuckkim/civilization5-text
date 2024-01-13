@@ -1,6 +1,6 @@
 import React from 'react';
 import { getText } from '@/db';
-import { Civ5RenderedText_Server } from '@/components/Civ5RenderedText_Server';
+import Civ5RenderedText_Server from '@/components/Civ5RenderedText_Server';
 
 type Router = {
     params: { key: string }
