@@ -47,6 +47,13 @@ export function getIconFilePath(icon: string): {
     return {file: iconFilePath.IconFontTextureFile, offset: iconMapping};
 }
 
+export function getAllIcon(): string[] {
+    const allIconQuery = dbQuery(`SELECT IconName FROM IconFontMapping`, 'game');
+    if (!allIconQuery)
+        throw new Error(`SQLITE DB: 아이콘 불러오기 실패!`);
+    return allIconQuery.map(v => v.IconName);
+}
+
 export function getIconFiles(): string[] {
     const data = dbQuery('SELECT IconFontTextureFile FROM IconFontTextures', 'game');
     return data.map(v => v.IconFontTextureFile);
@@ -57,4 +64,11 @@ export function getColor(color: string): {Red: number, Green: number, Blue: numb
     if (!data)
         throw new Error(`SQLITE DB: 색 데이터 ${color}의 정보를 찾을 수 없음!`);
     return data as {Red: number, Green: number, Blue: number, Alpha: number};
+}
+
+export function getAllColorName(): string[] {
+    const data = dbQuery(`SELECT Type From Colors`, "game");
+    if (!data)
+        throw new Error(`SQLITE DB: 색 정보 불러오기 실패!`);
+    return data.map(v => v.Type);
 }
