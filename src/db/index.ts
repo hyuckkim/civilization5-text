@@ -5,6 +5,9 @@ import path from 'path';
 const gamedb = new sqlite(path.join(process.cwd(), 'src/db/'+ 'Civ5DebugDatabase.db'));
 const textdb = new sqlite(path.join(process.cwd(), 'src/db/'+ 'Localization-Merged.db'));
 
+export const baseVersion = "1.0.3.279";
+export const vpVersion = "v4.4.2";
+
 function dbQuery(query: string, db: "game" | "text"): any[] {
     return ((db === "game") 
         ? gamedb 

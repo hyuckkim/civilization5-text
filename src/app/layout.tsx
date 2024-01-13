@@ -1,3 +1,4 @@
+import { baseVersion, vpVersion } from '@/db';
 import './globals.css';
 
 export const metadata = {
@@ -15,7 +16,7 @@ export default function RootLayout({
       <body>
         <header></header>
         {children}
-        <footer className='mt-20 border-t-2 border-gray-500'>Civilization 5 - Vox populi v3.10.12</footer>
+        <footer className='mt-20 border-t-2 border-gray-500'>Civilization 5 {baseVersion} - Vox populi {vpVersion}</footer>
       </body>
     </html>
   )
