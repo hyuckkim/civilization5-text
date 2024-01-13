@@ -22,7 +22,7 @@ export default function Civ5renderedTextBlock({ text, colors }: Civ5renderedText
         case "string":
             return <span style={ color !== "#ffffff" ? {color: color} : {}} className="text-sm text-white">{text.text}</span>;
         case "icon":
-            return <Image src={`/api/icon/${text.text}`} alt="" width={22} height={22} />
+            return <Image src={`/api/icon/${text.text}`} alt={`[${text.text}]`} width={22} height={22} />
         case "newline":
             return <br />
         default:
