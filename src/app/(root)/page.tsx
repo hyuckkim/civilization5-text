@@ -8,7 +8,7 @@ export default async function Title() {
     return (
         <div className='mx-auto m-0 max-w-2xl'>
             <div className="text-5xl text-center p-8">TXT_KEY formatter</div>
-            <Link href={`/${text.Tag}`} className="underline decoration-2">{text.Tag ?? ""}</Link>
+            <Link href={`/key/${text.Tag}`} className="underline decoration-2">{text.Tag ?? ""}</Link>
             <ChangableRenderedText text={text.Text} />
         </div>
     )
