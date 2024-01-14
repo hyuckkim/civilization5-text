@@ -1,4 +1,4 @@
-import { ChangableRenderedText } from "@/components";
+import ChangableRenderedText from "@/components/ChangableRenderedText";
 
 export default async function Page() {
   return (
