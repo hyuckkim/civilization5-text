@@ -1,5 +1,5 @@
 import Civ5RenderedText_Server from "@/components/Civ5RenderedText_Server";
-import { decodeBase64ToUnicode } from "@/utils";
+import { Base64 } from "js-base64";
 
 const TextPage = ({ 
   searchParams
@@ -9,8 +9,8 @@ const TextPage = ({
   }
 }) => {
   const param = searchParams?.d;
-  const text = typeof param === "string" ? decodeBase64ToUnicode(param) : "";
-
+  const text = typeof param === "string" ? Base64.decode(param) : "";
+0
   return (
     <Civ5RenderedText_Server str={text}/>
    );
