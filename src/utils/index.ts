@@ -74,7 +74,7 @@ export function encodeUnicodeToBase64(text: string): string {
 }
 
 export function decodeBase64ToUnicode(base64: string): string {
-  const utf8 = atob(base64);
+  const utf8 = atob(base64.replace(/^\/|\/$/g, ''));
   const text = decodeURIComponent(Array.from(utf8).map(function(c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
