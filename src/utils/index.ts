@@ -64,3 +64,19 @@ export function compileFourColor(text: string): string {
     return `#${red}${green}${blue}${alpha}`;
   });
 }
+
+export function encodeUnicodeToBase64(text: string): string {
+  const utf8 = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode(parseInt(p1, 16));
+  });
+  const base64 = btoa(utf8);
+  return base64;
+}
+
+export function decodeBase64ToUnicode(base64: string): string {
+  const utf8 = atob(base64);
+  const text = decodeURIComponent(Array.from(utf8).map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return text;
+}

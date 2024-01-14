@@ -16,7 +16,7 @@ export default function RootLayout({
       <body>
         <header></header>
         {children}
-        <footer className='mt-20 border-t-2 border-gray-500'>Civilization 5 {baseVersion} - Vox populi {vpVersion}</footer>
+        <footer className='hidden md:block mt-20 border-t-2 border-gray-500'>Civilization 5 {baseVersion} - Vox populi {vpVersion}</footer>
       </body>
     </html>
   )
