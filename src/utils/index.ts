@@ -25,7 +25,7 @@ export function prerenderer(sliced: (string | RegExpExecArray)[]): {text: Preren
           result.push({ type: "string", text: " ", option: {} });
         }],
         [/^TAB$/, () => {
-          result.push({ type: "string", text: "\t", option: {} });
+          result.push({ type: "tab", text: "", option: {} });
         }],
         [/^ICON/, () => {
           result.push({ type: "icon", text: t, option: {} });
