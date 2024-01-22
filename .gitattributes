@@ -1,0 +1,2 @@
+src/db/Civ5DebugDatabase.db filter=lfs diff=lfs merge=lfs -text
+src/db/Localization-Merged.db filter=lfs diff=lfs merge=lfs -text
