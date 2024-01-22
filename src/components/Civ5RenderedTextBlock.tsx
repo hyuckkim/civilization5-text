@@ -24,7 +24,7 @@ export default function Civ5renderedTextBlock({ text, colors }: Civ5renderedText
         case "icon":
             return <Image src={`/api/icon/${text.text}`} alt={`[${text.text}]`} width={22} height={22} />
         case "newline":
-            return <br />
+            return <><span style={{fontSize: 0, opacity: 0}}>[NEWLINE]</span><br /></>
         case "tab":
             return <>&#0009;</>
     }
