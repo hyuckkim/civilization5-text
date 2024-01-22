@@ -12,7 +12,7 @@ function dbQuery(query: string, db: "game" | "text"): any[] {
     return ((db === "game") 
         ? gamedb 
         : textdb)
-        .prepare(query).all();;
+        .prepare(query).all();
 }
 
 export function getText(tag: string, lang: string = "Language_en_US"): Civ5Text {
