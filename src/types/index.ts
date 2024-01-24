@@ -11,7 +11,7 @@ export type Civ5RenderedTextProp = {
     str: string,
 }
 export type PrerenderedText = {
-    type: "string" | "icon" | "newline" | "tab",
+    type: "string" | "icon" | "newline" | "tab" | "bracket",
     text: string
     option: { [data: string]: string }
 }

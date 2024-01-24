@@ -47,6 +47,40 @@ export function prerenderer(sliced: (string | RegExpExecArray)[]): {text: Preren
   return {text: result, key: resultkey};
 }
 
+export function sliceBracket(texts: PrerenderedText[]): {text: PrerenderedText[], brackets: string[] } {
+  const result: PrerenderedText[] = [];
+  const bracketText: string[] = [];
+  let bracketCount = 0;
+
+  for (const text of texts) {
+    if (text.type === "string") {
+      regexp_misc.separate(text.text, /{(.+?)}/g)
+        .forEach(element => {
+          if (typeof element === "string") {
+            result.push({
+              ...text,
+              text: element
+            });
+          }
+          else {
+            result.push({
+              ...text,
+              text: bracketCount.toString(),
+              type: "bracket"
+            });
+            bracketText.push(`{${element[1]}}`);
+            bracketCount++;
+          }
+        });
+    }
+    else {
+      result.push(text);
+    }
+  }
+
+  return { text: result, brackets: bracketText };
+}
+
 export function compileCivSQLColor({Red, Green, Blue, Alpha}: CivSQLColor): string {
   const red = Math.round(Red * 255).toString(16).padStart(2, '0');
   const green = Math.round(Green * 255).toString(16).padStart(2, '0');

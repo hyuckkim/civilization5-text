@@ -3,10 +3,14 @@
 import react, { useEffect, useState } from 'react';
 import Civ5RenderedTextBlock from './Civ5RenderedTextBlock';
 import { Civ5RenderedTextProp, CivColors, CivSQLColor, PrerenderedText } from '@/types';
-import { prerenderer } from '@/utils';
+import { prerenderer, sliceBracket } from '@/utils';
 import * as regexp_misc from 'regexp-misc';
 
-export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
+type Civ5BracketProp = {
+    brackets: string[],
+    onFoundBrackets: (brackets: string[]) => void
+}
+export default function Civ5RenderedText({ str, brackets, onFoundBrackets }: Civ5RenderedTextProp & Civ5BracketProp) {
     const [renderingText, setRenderingText] = useState<PrerenderedText[]>([]);
     const [textKey, setTextKey] = useState<string[]>([]);
     const [colors, setColors] = useState<CivColors>({});
@@ -14,9 +18,11 @@ export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     useEffect(() => {
         const sliced = regexp_misc.separate(str, /\[(.+?)\]/g);
         const {text, key} = prerenderer(sliced);
+        const { text: sepText, brackets } = sliceBracket(text);
 
-        setRenderingText(text);
+        setRenderingText(sepText);
         setTextKey(key);
+        onFoundBrackets(brackets);
     }, [str]);
 
     useEffect(() => {
@@ -28,7 +34,7 @@ export default function Civ5RenderedText({ str }: Civ5RenderedTextProp) {
     return (
         <div className='bg-black rounded-md p-2 border border-l-white max-w-xl'>{
             isTextCorrect(str) 
-            ? renderingText.map((e, idx) => <Civ5RenderedTextBlock text={e} colors={colors} key={idx} />)
+            ? renderingText.map((e, idx) => <Civ5RenderedTextBlock text={e} colors={colors} brackets={brackets} key={idx} />)
             : <span className='text-sm text-white'>텍스트에 오류가 있습니다 (괄호가 닫히지 않았음)</span>
         }
         </div>
