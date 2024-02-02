@@ -23,7 +23,7 @@ export default function Civ5renderedTextBlock({ text, colors, brackets }: Civ5re
         case "string":
             return <span style={ color !== "#ffffff" ? {color: color} : {}} className="text-sm text-white">{text.text}</span>
         case "icon":
-            return <Image src={`/api/icon/${text.text}`} alt={`[${text.text}]`} width={22} height={22} />
+            return <Image src={`/api/icon/${text.text}`} alt={`[${text.text}]`} width={22} height={22} onClick={() => navigator.clipboard.writeText(`[${text.text}]`)}/>
         case "newline":
             return <><span style={{fontSize: 0, opacity: 0}}>[NEWLINE]</span><br /></>
         case "tab":
