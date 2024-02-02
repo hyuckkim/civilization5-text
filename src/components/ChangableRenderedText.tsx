@@ -24,7 +24,7 @@ export default function ChangableRenderedText({text}: {text: string}) {
     <CopyPublishLinkButton binary={Base64.encode(str, true)} className="border-2 border-black rounded-md m-2 px-4 py-2"/>
     {brackets.map((b, i) => (
       <div key={i} className="w-2xl flex justify-between mb-0.5">
-        <div className="w-1/2 overflow-hidden text-ellipsis rtl text-sm" title={b[0]} onClick={() => loadText(i)}>{b[0]}</div>
+        <input className="w-1/2 text-sm overflow-hidden text-ellipsis" title={b[0]} onClick={() => loadText(i)} value={b[0]} />
         <input value={b[1]} className="bg-neutral-200 w-1/2" onChange={(e) => setBrackets(prev =>
           prev.map((b, j) => (i === j) ? [b[0], e.target.value] : b))} />
       </div>
