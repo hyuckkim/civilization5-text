@@ -1,10 +1,24 @@
-import React from 'react';
-import { getRandomText } from '@/db';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import ChangableRenderedText from '@/components/ChangableRenderedText';
 import Link from 'next/link';
+import { Civ5Text } from '@/types';
 
-export default async function Title() {
-    const text = getRandomText("Language_ko_KR");
+export default function Title() {
+    const [text, setText] = useState<Civ5Text | undefined>(undefined);
+
+    useEffect(() => {
+        let ignore = false;
+        fetch(new URL('/api/text/Language_ko_KR', document.location.origin))
+            .then(async v => {
+                const data = await v.json();
+                if (!ignore) setText(data);
+        });
+        return () => { ignore = true; }
+    }, []);
+
+    if (text === undefined) return null;
     return (
         <div className='mx-auto m-0 max-w-2xl'>
             <div className="text-5xl text-center p-8">TXT_KEY formatter</div>
