@@ -23,7 +23,7 @@ export default function Title() {
         <div className='mx-auto m-0 max-w-2xl'>
             <div className="text-5xl text-center p-8">TXT_KEY formatter</div>
             <Link href={`/key/${text.Tag}`} className="underline decoration-2">{text.Tag ?? ""}</Link>
-            <ChangableRenderedText text={text.Text} />
+            <ChangableRenderedText text={text.Text} buttonEnabled />
         </div>
     )
 }
