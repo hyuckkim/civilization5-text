@@ -15,3 +15,10 @@ export type PrerenderedText = {
     text: string
     option: { [data: string]: string }
 }
+
+export type Civ5Map = {
+    mapName: string,
+    author: string,
+    caption: string,
+    file: string,
+};
